@@ -1,32 +1,36 @@
-const mongoose=require('mongoose')//import mongoose
-const isEmail = require('validator/lib/isEmail')
-const Schema=mongoose.Schema//importing schema
-const userSchema=new Schema({    //constructor of schema
+const mongoose=require('mongoose')
+const validator=require('validator')
+const Schema=mongoose.Schema
+const userSchema=new Schema({
     username:{
-        type:String,  //defines datatype of username
-        required:true, //mandatory
-        minlength:[4,'minimum length should be greater than 4'],
-        maxlength:18,
+        type:String,
+        required:true,
+        minlength:[5,'minimum 5 length is required'],
+        maxlength:[15,'maximum length is 15'],
         unique:true
     },
     email:{
         type:String,
         required:true,
         unique:true,
-        validate:{     
+        validate:{
             validator:function(value){
-                return isEmail(value)
+                return validator.isEmail(value)
             },
-            message: function(){
-                return('invalid email id')
+            message:function(){
+                return 'Invalid Email Format'
             }
         }
     },
     password:{
         type:String,
         required:true,
-        minlength:6,
-        maxlength:128
+        minlength:[8,'minimum 8 length is required'],
+        maxlength:[128,'maximum length is 128']
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now()
     }
 })
 const User=mongoose.model('User',userSchema)

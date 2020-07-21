@@ -1,61 +1,57 @@
 
-const User = require('../models/user')
-const bcryptjs = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const usersController = {}
+const User=require('../models/user')
+const bcryptjs=require('bcryptjs')
+const jwt=require('jsonwebtoken')
+const usersController={}
 
-usersController.register = (req, res) => {
-    const body = req.body 
-    const user = new User(body)
+usersController.register = (req,res)=>{
+    const body=req.body
+    const user=new User(body)
     bcryptjs.genSalt()
-        .then((salt) => {
-            bcryptjs.hash(user.password, salt)
-                .then((encrypted) => {
-                    user.password = encrypted
+        .then((salt)=>{
+            bcryptjs.hash(user.password,salt)
+                .then((encrypted)=>{
+                    user.password=encrypted
                     user.save()
-                        .then((user) => {
+                        .then((user)=>{
                             res.json(user)
                         })
-                        .catch((err) => {
+                        .catch((err)=>{
                             res.json(err)
-                        })
+                        })    
                 })
         })
 }
-
-usersController.login = (req, res) => {
-    const body = req.body 
-    User.findOne({ email: body.email }) 
-        .then((user) => {
-            if(!user) {
-                res.json({ 
-                    errors: 'invalid email or password'
+usersController.login=(req,res)=>{
+    const body=req.body
+    User.findOne({email:body.email})
+        .then((user)=>{
+            if(!user)
+            {
+                res.json({
+                    error:"invalid email id or password"
                 })
             }
-
-            bcryptjs.compare(body.password, user.password)
-                .then((match) => {
-                    if(match) {
-                        const tokenData = {
-                            _id: user._id,
-                            email: user.email,
-                            username: user.username
+            bcryptjs.compare(body.password,user.password)
+                .then((match)=>{
+                    if(match)
+                    {
+                        const tokenData={
+                            id:user._id,
+                            email:user.email,
+                            username:user.username
                         }
-                        const token = jwt.sign(tokenData, 'rashi123', { expiresIn: '2d'})
-                        res.json({
-                            token: `Bearer ${token}`
-                        })
-                    } else {
-                        res.json({ errors: 'invalid email or password'})
+                        const token=jwt.sign(tokenData,'Rashi@123',{expiresIn:'2d'})
+                        res.json({"token":token})
+                    }
+                    else
+                    {
+                        res.json({error:"invalid email or password"})
                     }
                 })
         })
 }
-
-usersController.account = (req, res) => {
+usersController.account=(req,res)=>{
     res.json(req.user)
 }
-
-
-
-module.exports = usersController
+module.exports=usersController

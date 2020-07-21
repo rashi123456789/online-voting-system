@@ -5,6 +5,7 @@ import App from './App'
 import {Provider} from 'react-redux'
 import configureStore from './store/configureStore'
 import { startGetUser } from './actions/userAction'
+import { startSetCitizens } from './actions/citizenAction'
 
 const store=configureStore()
 console.log(store.getState())
@@ -16,6 +17,7 @@ store.subscribe(()=>{
 if(localStorage.getItem('authToken'))
   {
     store.dispatch(startGetUser())
+    store.dispatch(startSetCitizens())
   }
 
 const jsx=(
