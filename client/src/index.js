@@ -6,7 +6,9 @@ import {Provider} from 'react-redux'
 import configureStore from './store/configureStore'
 import { startGetUser } from './actions/userAction'
 import { startSetCitizens } from './actions/citizenAction'
-
+import { startSetPartys } from './actions/partyAction'
+import {startSetCandidates} from './actions/candidateAction'
+import { startSetCastvotes } from './actions/castvoteAction'
 const store=configureStore()
 console.log(store.getState())
 
@@ -18,6 +20,10 @@ if(localStorage.getItem('authToken'))
   {
     store.dispatch(startGetUser())
     store.dispatch(startSetCitizens())
+    store.dispatch(startSetPartys())
+    store.dispatch(startSetCandidates())
+    store.dispatch(startSetCastvotes())
+    
   }
 
 const jsx=(

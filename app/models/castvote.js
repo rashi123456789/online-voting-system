@@ -1,19 +1,14 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const citizenSchema=new Schema({
+const castvoteSchema=new Schema({
     voterId:{
         type:String,
         required:true,
         unique:true,
         minlength:[4,'minimum 4 length is required']
     },
-    password:{
-        type:String,
-        required:true,
-        minlength:[8,'minimum 8 length is required'],
-        maxlength:[128,'maximum 128 digitmongod']
-    },
+    
     name:{
         type:String,
         required:true,
@@ -33,11 +28,21 @@ const citizenSchema=new Schema({
         type:String,
         required:true
     },
+    party:{
+        type:Schema.Types.ObjectId,
+        ref:'Party',
+        required:true
+    },
+    candidate:{
+        type:Schema.Types.ObjectId,
+        ref:'Candidate',
+        required:true
+    },
     user:{
         type:Schema.Types.ObjectId,
         ref:'User',
         required:true
     }
 })
-const Citizen=mongoose.model('Citizen',citizenSchema)
-module.exports=Citizen
+const Castvote=mongoose.model('Castvote',castvoteSchema)
+module.exports=Castvote
